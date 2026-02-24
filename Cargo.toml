@@ -1,6 +1,6 @@
 [package]
 name = "nexmon"
-version = "0.1.6"
+version = "0.1.7"
 edition = "2021"
 description = "Futuristic animated system monitor CLI tool in Rust"
 readme = "README.md"
