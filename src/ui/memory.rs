@@ -1,3 +1,4 @@
+use crate::{app::AppState, ui::build_block};
 use ratatui::{
     layout::{Constraint, Direction, Layout, Rect},
     style::Color,
@@ -5,7 +6,6 @@ use ratatui::{
     widgets::{Gauge, Row, Table},
     Frame,
 };
-use crate::{app::AppState, ui::build_block};
 
 pub fn render(f: &mut Frame, app: &AppState, area: Rect) {
     let block = build_block(" Memory ");
@@ -23,22 +23,36 @@ pub fn render(f: &mut Frame, app: &AppState, area: Rect) {
 
     let ram_used = app.system.used_memory() as f64 / 1_073_741_824.0;
     let ram_total = app.system.total_memory() as f64 / 1_073_741_824.0;
-    let ram_percent = if ram_total > 0.0 { (ram_used / ram_total * 100.0) as u16 } else { 0 };
+    let ram_percent = if ram_total > 0.0 {
+        (ram_used / ram_total * 100.0) as u16
+    } else {
+        0
+    };
 
     let ram_gauge = Gauge::default()
         .gauge_style(Style::default().fg(Color::Cyan))
         .percent(ram_percent.clamp(0, 100))
-        .label(format!("RAM [{:.1}GB / {:.1}GB] ({}%)", ram_used, ram_total, ram_percent));
+        .label(format!(
+            "RAM [{:.1}GB / {:.1}GB] ({}%)",
+            ram_used, ram_total, ram_percent
+        ));
     f.render_widget(ram_gauge, layout[0]);
 
     let swap_used = app.system.used_swap() as f64 / 1_073_741_824.0;
     let swap_total = app.system.total_swap() as f64 / 1_073_741_824.0;
-    let swap_percent = if swap_total > 0.0 { (swap_used / swap_total * 100.0) as u16 } else { 0 };
+    let swap_percent = if swap_total > 0.0 {
+        (swap_used / swap_total * 100.0) as u16
+    } else {
+        0
+    };
 
     let swap_gauge = Gauge::default()
         .gauge_style(Style::default().fg(Color::Magenta))
         .percent(swap_percent.clamp(0, 100))
-        .label(format!("SWAP [{:.1}GB / {:.1}GB] ({}%)", swap_used, swap_total, swap_percent));
+        .label(format!(
+            "SWAP [{:.1}GB / {:.1}GB] ({}%)",
+            swap_used, swap_total, swap_percent
+        ));
     f.render_widget(swap_gauge, layout[1]);
 
     let rows = vec![
@@ -47,7 +61,10 @@ pub fn render(f: &mut Frame, app: &AppState, area: Rect) {
             "RAM".to_string(),
             format!("{:.1} GB", ram_used),
             format!("{:.1} GB", ram_total),
-            format!("{:.1} GB", app.system.available_memory() as f64 / 1_073_741_824.0),
+            format!(
+                "{:.1} GB",
+                app.system.available_memory() as f64 / 1_073_741_824.0
+            ),
         ]),
         Row::new(vec![
             "SWAP".to_string(),
@@ -57,6 +74,14 @@ pub fn render(f: &mut Frame, app: &AppState, area: Rect) {
         ]),
     ];
 
-    let table = Table::new(rows, [Constraint::Percentage(25), Constraint::Percentage(25), Constraint::Percentage(25), Constraint::Percentage(25)]);
+    let table = Table::new(
+        rows,
+        [
+            Constraint::Percentage(25),
+            Constraint::Percentage(25),
+            Constraint::Percentage(25),
+            Constraint::Percentage(25),
+        ],
+    );
     f.render_widget(table, layout[2]);
 }

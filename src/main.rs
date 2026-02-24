@@ -11,7 +11,10 @@ use crossterm::{
     terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
 };
 use ratatui::{backend::CrosstermBackend, Terminal};
-use std::{io, time::{Duration, Instant}};
+use std::{
+    io,
+    time::{Duration, Instant},
+};
 
 #[derive(Parser)]
 #[command(name = "nexmon", about = "Futuristic system monitor", version)]
@@ -49,9 +52,9 @@ async fn main() -> Result<()> {
     terminal.show_cursor()?;
 
     if let Err(err) = res {
-         println!("{:?}", err);
+        println!("{:?}", err);
     }
-    
+
     Ok(())
 }
 
@@ -92,11 +95,23 @@ fn run_app<B: ratatui::backend::Backend>(
                         }
                         KeyCode::Char('j') | KeyCode::Down => app.next_process(),
                         KeyCode::Char('k') | KeyCode::Up => app.previous_process(),
-                        KeyCode::Char('C') | KeyCode::Char('c') if !key.modifiers.contains(KeyModifiers::CONTROL) => app.sort_column = app::SortColumn::Cpu,
-                        KeyCode::Char('M') | KeyCode::Char('m') => app.sort_column = app::SortColumn::Memory,
-                        KeyCode::Char('P') | KeyCode::Char('p') => app.sort_column = app::SortColumn::Pid,
-                        KeyCode::Char('N') | KeyCode::Char('n') => app.sort_column = app::SortColumn::Name,
-                        KeyCode::Char('R') | KeyCode::Char('r') => app.sort_ascending = !app.sort_ascending,
+                        KeyCode::Char('C') | KeyCode::Char('c')
+                            if !key.modifiers.contains(KeyModifiers::CONTROL) =>
+                        {
+                            app.sort_column = app::SortColumn::Cpu
+                        }
+                        KeyCode::Char('M') | KeyCode::Char('m') => {
+                            app.sort_column = app::SortColumn::Memory
+                        }
+                        KeyCode::Char('P') | KeyCode::Char('p') => {
+                            app.sort_column = app::SortColumn::Pid
+                        }
+                        KeyCode::Char('N') | KeyCode::Char('n') => {
+                            app.sort_column = app::SortColumn::Name
+                        }
+                        KeyCode::Char('R') | KeyCode::Char('r') => {
+                            app.sort_ascending = !app.sort_ascending
+                        }
                         KeyCode::Char('/') => app.search_mode = true,
                         _ => {}
                     }

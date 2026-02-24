@@ -1,7 +1,7 @@
 use ratatui::widgets::TableState;
-use sysinfo::System;
 use std::collections::VecDeque;
 use std::time::Duration;
+use sysinfo::System;
 
 #[derive(PartialEq)]
 pub enum SortColumn {
@@ -55,7 +55,7 @@ impl AppState {
     pub fn new(tick_rate: u64, show_loopback: bool, max_processes: usize, sort: String) -> Self {
         let mut system = System::new_all();
         system.refresh_all();
-        
+
         let sort_column = match sort.to_lowercase().as_str() {
             "pid" => SortColumn::Pid,
             "name" => SortColumn::Name,

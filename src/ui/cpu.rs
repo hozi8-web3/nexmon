@@ -1,10 +1,10 @@
+use crate::{app::AppState, ui::build_block};
 use ratatui::{
     layout::{Constraint, Direction, Layout, Rect},
     style::{Color, Modifier, Style},
     widgets::{Gauge, Sparkline},
     Frame,
 };
-use crate::{app::AppState, ui::build_block};
 
 pub fn render(f: &mut Frame, app: &AppState, area: Rect) {
     let block = build_block(" CPU ");
@@ -23,12 +23,18 @@ pub fn render(f: &mut Frame, app: &AppState, area: Rect) {
 
     let overall_color = get_color(app.overall_cpu);
     let overall_gauge = Gauge::default()
-        .gauge_style(Style::default().fg(overall_color).add_modifier(Modifier::BOLD))
+        .gauge_style(
+            Style::default()
+                .fg(overall_color)
+                .add_modifier(Modifier::BOLD),
+        )
         .percent((app.overall_cpu).clamp(0.0, 100.0) as u16)
         .label(format!("Overall CPU [{:.1}%]", app.overall_cpu));
     f.render_widget(overall_gauge, layout[0]);
 
-    if app.cpu_history.is_empty() { return; }
+    if app.cpu_history.is_empty() {
+        return;
+    }
 
     let core_constraints = vec![Constraint::Length(1); app.cpu_history.len()];
     let cores_layout = Layout::default()
@@ -37,7 +43,9 @@ pub fn render(f: &mut Frame, app: &AppState, area: Rect) {
         .split(layout[2]);
 
     for (i, core) in app.cpu_history.iter().enumerate() {
-        if i >= cores_layout.len() { break; }
+        if i >= cores_layout.len() {
+            break;
+        }
         let color = get_color(core.usage);
         let g = Gauge::default()
             .gauge_style(Style::default().fg(color))
@@ -45,7 +53,7 @@ pub fn render(f: &mut Frame, app: &AppState, area: Rect) {
             .label(format!("{} [{:.1}%]", core.core_name, core.usage));
         f.render_widget(g, cores_layout[i]);
     }
-    
+
     // overall sparkline mapping first core's history as rough average, to avoid creating new state var
     if let Some(first_core) = app.cpu_history.first() {
         let history_data: Vec<u64> = first_core.history.iter().copied().collect();
