@@ -25,6 +25,8 @@ pub struct NetworkHistory {
     pub tx_history: VecDeque<u64>,
 }
 
+use crate::system::gpu::GpuInfo;
+
 pub struct ProcessInfo {
     pub pid: u32,
     pub name: String,
@@ -37,6 +39,7 @@ pub struct AppState {
     pub system: System,
     pub networks: Networks,
     pub cpu_history: Vec<CpuHistory>,
+    pub gpus: Option<Vec<GpuInfo>>,
     pub overall_cpu: f32,
     pub network_history: Vec<NetworkHistory>,
     pub processes: Vec<ProcessInfo>,
@@ -68,6 +71,7 @@ impl AppState {
             system,
             networks: Networks::new_with_refreshed_list(),
             cpu_history: Vec::new(),
+            gpus: None,
             overall_cpu: 0.0,
             network_history: Vec::new(),
             processes: Vec::new(),

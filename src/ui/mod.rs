@@ -1,4 +1,5 @@
 pub mod cpu;
+pub mod gpu;
 pub mod memory;
 pub mod network;
 pub mod processes;
@@ -25,13 +26,29 @@ pub fn render(f: &mut Frame, app: &mut AppState) {
 
     render_header(f, chunks[0]);
 
+    let has_gpu = app.gpus.is_some() && !app.gpus.as_ref().unwrap().is_empty();
+
+    let top_row_constraints = if has_gpu {
+        vec![
+            Constraint::Percentage(33),
+            Constraint::Percentage(34),
+            Constraint::Percentage(33),
+        ]
+    } else {
+        vec![Constraint::Percentage(50), Constraint::Percentage(50)]
+    };
+
     let top_chunks = Layout::default()
         .direction(Direction::Horizontal)
-        .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
+        .constraints(top_row_constraints)
         .split(chunks[1]);
 
     cpu::render(f, app, top_chunks[0]);
     memory::render(f, app, top_chunks[1]);
+
+    if has_gpu {
+        gpu::render(f, app, top_chunks[2]);
+    }
 
     network::render(f, app, chunks[2]);
     processes::render(f, app, chunks[3]);

@@ -39,6 +39,29 @@ pub fn refresh(app: &mut AppState) {
         total_cpu / app.system.cpus().len() as f32
     };
 
+    // GPU
+    if let Some(new_gpus) = crate::system::gpu::get_gpu_info() {
+        if let Some(ref mut existing_gpus) = app.gpus {
+            for (i, new_gpu) in new_gpus.into_iter().enumerate() {
+                if let Some(existing) = existing_gpus.get_mut(i) {
+                    existing.usage = new_gpu.usage;
+                    existing.mem_used_mb = new_gpu.mem_used_mb;
+                    existing.mem_total_mb = new_gpu.mem_total_mb;
+                    existing.temp_c = new_gpu.temp_c;
+
+                    if existing.history.len() >= 60 {
+                        existing.history.pop_front();
+                    }
+                    existing.history.push_back(existing.usage as u64);
+                } else {
+                    existing_gpus.push(new_gpu);
+                }
+            }
+        } else {
+            app.gpus = Some(new_gpus);
+        }
+    }
+
     // Network
     for (name, network) in &app.networks {
         if !app.show_loopback && name.starts_with("lo") {
