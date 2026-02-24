@@ -15,7 +15,7 @@ pub fn get_gpu_info() -> Option<Vec<GpuInfo>> {
     // Run nvidia-smi with CSV query format:
     // index, name, utilization.gpu, memory.used, memory.total, temperature.gpu
     let output = Command::new("nvidia-smi")
-        .args(&[
+        .args([
             "--query-gpu=index,name,utilization.gpu,memory.used,memory.total,temperature.gpu",
             "--format=csv,noheader,nounits",
         ])
