@@ -23,7 +23,7 @@ pub fn render(f: &mut Frame, app: &mut AppState) {
         ])
         .split(f.size());
 
-    render_header(f, app, chunks[0]);
+    render_header(f, chunks[0]);
 
     let top_chunks = Layout::default()
         .direction(Direction::Horizontal)
@@ -47,7 +47,7 @@ pub fn build_block(title: &str) -> Block<'static> {
         .border_type(BorderType::Rounded)
 }
 
-fn render_header(f: &mut Frame, app: &AppState, area: Rect) {
+fn render_header(f: &mut Frame, area: Rect) {
     let host = sysinfo::System::host_name().unwrap_or_else(|| "unknown".to_string());
     let title = format!(" ◈ NEXMON v{} │ host: {} ", env!("CARGO_PKG_VERSION"), host);
     let p = Paragraph::new(title)
