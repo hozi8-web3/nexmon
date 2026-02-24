@@ -4,7 +4,8 @@ A futuristic, animated system monitor CLI tool built in Rust. It's designed to b
 
 *Nexmon provides an ultra-modern alternative to `htop` or `top` with cyber-aesthetic visuals including sparklines, neon accent colors, and box-drawing layouts.*
 
-![Nexmon Screenshot Description]
+<img width="1919" height="1027" alt="image" src="https://github.com/user-attachments/assets/a4221523-b9dd-460b-a782-aea51dc47e69" />
+
 > The terminal window features a stylized double-border layout. At the top is a bright neon header with glitch aesthetic bounds. Below it, the CPU section displays dynamic gauges transitioning from green to yellow to red for each core, with an overall sparkline dancing underneath. To the right, memory bars for RAM (Cyan) and Swap (Magenta) breathe vividly with usage. The middle section shows network interfaces with incoming (Green) and outgoing (Yellow) sparkline histograms moving in real-time. Finally, the bottom section features a sortable process table highlighted in dark gray and accented heavily in cyan and pink for high-usage applications. The footer provides an interactive command bar.
 
 ## Installation
