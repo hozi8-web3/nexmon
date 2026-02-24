@@ -1,7 +1,7 @@
 use ratatui::widgets::TableState;
 use std::collections::VecDeque;
 use std::time::Duration;
-use sysinfo::{System, Networks};
+use sysinfo::{Networks, System};
 
 #[derive(PartialEq)]
 pub enum SortColumn {
