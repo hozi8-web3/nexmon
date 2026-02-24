@@ -48,10 +48,7 @@ pub fn build_block(title: &str) -> Block<'static> {
 }
 
 fn render_header(f: &mut Frame, app: &AppState, area: Rect) {
-    let host = app
-        .system
-        .host_name()
-        .unwrap_or_else(|| "unknown".to_string());
+    let host = sysinfo::System::host_name().unwrap_or_else(|| "unknown".to_string());
     let title = format!(" ◈ NEXMON v{} │ host: {} ", env!("CARGO_PKG_VERSION"), host);
     let p = Paragraph::new(title)
         .style(

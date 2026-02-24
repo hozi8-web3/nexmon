@@ -1,7 +1,7 @@
 use ratatui::widgets::TableState;
 use std::collections::VecDeque;
 use std::time::Duration;
-use sysinfo::System;
+use sysinfo::{System, Networks};
 
 #[derive(PartialEq)]
 pub enum SortColumn {
@@ -35,6 +35,7 @@ pub struct ProcessInfo {
 
 pub struct AppState {
     pub system: System,
+    pub networks: Networks,
     pub cpu_history: Vec<CpuHistory>,
     pub overall_cpu: f32,
     pub network_history: Vec<NetworkHistory>,
@@ -65,6 +66,7 @@ impl AppState {
 
         Self {
             system,
+            networks: Networks::new_with_refreshed_list(),
             cpu_history: Vec::new(),
             overall_cpu: 0.0,
             network_history: Vec::new(),

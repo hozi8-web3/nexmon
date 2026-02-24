@@ -88,16 +88,10 @@ fn run_app<B: ratatui::backend::Backend>(
                 } else {
                     match key.code {
                         KeyCode::Char('q') | KeyCode::Char('Q') => return Ok(()),
-                        KeyCode::Char('c') => {
-                            if key.modifiers.contains(KeyModifiers::CONTROL) {
-                                return Ok(());
-                            }
-                        }
+                        KeyCode::Char('c') if key.modifiers.contains(KeyModifiers::CONTROL) => return Ok(()),
                         KeyCode::Char('j') | KeyCode::Down => app.next_process(),
                         KeyCode::Char('k') | KeyCode::Up => app.previous_process(),
-                        KeyCode::Char('C') | KeyCode::Char('c')
-                            if !key.modifiers.contains(KeyModifiers::CONTROL) =>
-                        {
+                        KeyCode::Char('C') | KeyCode::Char('c') => {
                             app.sort_column = app::SortColumn::Cpu
                         }
                         KeyCode::Char('M') | KeyCode::Char('m') => {

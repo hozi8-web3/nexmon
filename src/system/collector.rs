@@ -3,6 +3,8 @@ use std::collections::VecDeque;
 
 pub fn refresh(app: &mut AppState) {
     app.system.refresh_all();
+    app.networks.refresh_list();
+    app.networks.refresh();
 
     // CPU
     let cpus = app.system.cpus();
@@ -38,7 +40,7 @@ pub fn refresh(app: &mut AppState) {
     };
 
     // Network
-    for (name, network) in app.system.networks() {
+    for (name, network) in &app.networks {
         if !app.show_loopback && name.starts_with("lo") {
             continue;
         }
